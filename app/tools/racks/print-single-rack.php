@@ -151,11 +151,11 @@ if ($User->settings->enableCustomers=="1" && $User->get_module_permissions ("cus
             $links = [];
             # permissions
             if($User->get_module_permissions ("racks")>=User::ACCESS_RW) {
-                $links[] = ["type"=>"header", "text"=>"Manage"];
-                $links[] = ["type"=>"link", "text"=>"Edit rack", "href"=>"", "class"=>"editRack", "dataparams"=>" data-action='edit' data-rackid='$rack->id'", "icon"=>"pencil"];
+                $links[] = ["type"=>"header", "text"=>_("Manage")];
+                $links[] = ["type"=>"link", "text"=>_("Edit rack"), "href"=>"", "class"=>"editRack", "dataparams"=>" data-action='edit' data-rackid='$rack->id'", "icon"=>"pencil"];
             }
             if($User->get_module_permissions ("racks")>=User::ACCESS_RWA) {
-                $links[] = ["type"=>"link", "text"=>"Delete rack", "href"=>"", "class"=>"editRack", "dataparams"=>" data-action='delete' data-rackid='$rack->id'", "icon"=>"times"];
+                $links[] = ["type"=>"link", "text"=>_("Delete rack"), "href"=>"", "class"=>"editRack", "dataparams"=>" data-action='delete' data-rackid='$rack->id'", "icon"=>"times"];
             }
             // print links
             print $User->print_actions($User->user->compress_actions, $links, true, true);
@@ -233,7 +233,7 @@ if ($User->settings->enableCustomers=="1" && $User->get_module_permissions ("cus
                 }
 
                 if($User->get_module_permissions ("racks")>=User::ACCESS_RW) {
-                    print "<a href='' class='btn btn-xs btn-default btn-danger editRackDevice' data-action='remove' rel='tooltip' data-html='true' data-placement='left' title='"._("Remove")."' data-action='remove' style='margin-bottom:2px;margin-right:5px;' data-rackid='$rack->id' data-deviceid='$cur->id' data-devicetype='$ctype' data-csrf='".$User->Crypto->csrf_cookie ("create", "rack_devices_".$rack->id."_device_".$cur->id)."'><i class='fa fa-times'></i></a> ";
+                    print "<a href='' class='btn btn-xs btn-default btn-danger editRackDevice' data-action='remove' rel='tooltip' data-html='true' data-placement='left' title='"._("Remove")."' data-action='remove' style='margin-bottom:2px;margin-right:5px;' data-rackid='$rack->id' data-deviceid='$cur->id' data-devicetype='$ctype' data-csrf='".$User->Crypto->csrf_cookie ("create-if-not-exists", "rack_devices_".$rack->id."_device_".$cur->id)."'><i class='fa fa-times'></i></a> ";
                 }
                 print "<span class='badge badge1 badge5 $error' style='margin-bottom:3px;margin-right:5px;'>"._("Position").": $cur->rack_start_print, "._("Size").": $cur->rack_size U</span>";
                 if ($ctype == 'device') {

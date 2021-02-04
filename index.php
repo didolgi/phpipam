@@ -60,7 +60,7 @@ else {
 
 		# set default pagesize
 		if(!isset($_COOKIE['table-page-size'])) {
-	        setcookie("table-page-size", 50, time()+2592000, "/", false, false, false);
+			setcookie_samesite("table-page-size", 50, 2592000, false);
 		}
 	?>
 	<!DOCTYPE HTML>

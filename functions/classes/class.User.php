@@ -201,6 +201,17 @@ class User extends Common_functions {
         else {
             session_start ();
         }
+
+        // Re-set HTTP session cookie with mandatory samesite=Strict attribute.
+        // php native support for samesite is >=php7.3
+
+        $session_name = session_name();
+        $session_id = session_id();
+        $session_lifetime = ini_get('session.cookie_lifetime');
+        $session_use_cookies  = ini_get('session.use_cookies');
+
+        if ($session_use_cookies && is_string($session_id) && strlen($session_id) > 0)
+            setcookie_samesite($session_name, $session_id, $session_lifetime, true);
     }
 
     /**
@@ -456,8 +467,21 @@ class User extends Common_functions {
      */
     private function set_redirect_cookie () {
         # save current redirect vaule
-        if($_SERVER['SCRIPT_URL']!="/login/" && $_SERVER['SCRIPT_URL']!="logout" && $_SERVER['SCRIPT_URL']!="?page=login" && $_SERVER['SCRIPT_URL']!="?page=logout" && $_SERVER['SCRIPT_URL']!="index.php?page=login" && $_SERVER['SCRIPT_URL']!="index.php?page=logout" && $_SERVER['SCRIPT_URL']!="/" && $_SERVER['SCRIPT_URL']!="%2f");
-        setcookie("phpipamredirect", preg_replace('/^\/+/', '/', $_SERVER['REQUEST_URI']), time()+10, "/", null, null, true);
+        if( $_SERVER['SCRIPT_URL']=="/login/" ||
+            $_SERVER['SCRIPT_URL']=="logout" ||
+            $_SERVER['SCRIPT_URL']=="?page=login" ||
+            $_SERVER['SCRIPT_URL']=="?page=logout" ||
+            $_SERVER['SCRIPT_URL']=="index.php?page=login" ||
+            $_SERVER['SCRIPT_URL']=="index.php?page=logout" ||
+            $_SERVER['SCRIPT_URL']=="/" ||
+            $_SERVER['SCRIPT_URL']=="%2f")
+        {
+            return;
+        }
+
+        $uri = is_string($_SERVER['HTTP_X_FORWARDED_URI']) ? $_SERVER['HTTP_X_FORWARDED_URI'] : $_SERVER['REQUEST_URI'];
+
+        setcookie_samesite("phpipamredirect", preg_replace('/^\/+/', '/', $uri), 10, true);
     }
 
     /**
@@ -1750,7 +1774,8 @@ class User extends Common_functions {
                 "locations",
                 "devices",
                 "dhcp",
-                "routing"
+                "routing",
+                "vaults"
             ];
     }
 

@@ -7,10 +7,13 @@
     + L2 Domains user permissions;
     + Add scanPingType=="none" option to disable scanning;
     + Custom fields on IP request forms (#2956);
+    + Added subnet free space map for each possible subnet mask;
+    + Added Vaults (Certificate andf password storing);
 
     Enhancements, changes:
     ----------------------------
     + Improved php7.4 compatibility;
+    + SameSite attribute enabled for site cookies;
     + SAML2
         + php-saml updated to 3.4.1 (#3055);
         + Removal of php-mcrypt dependancy;
@@ -19,6 +22,7 @@
         + php-saml protocol debugging;
         + Support for signed assertions;
         + SAML usernames can be extracted from assertion attributes (#2948);
+    + Selectable mask for number of subnets/hosts in subnet masks;
 
     Bugfixes:
     ----------------------------
@@ -51,6 +55,7 @@
     + Wrong unit location for dual-sided racks (#3086);
     + Linked ip_addr shows integer notation (#3100);
     + Invalid scan type () error (#2785);
+    + Invalid CSRF cookie editing rack items (#2556);
     + API:
         + Fixed /user/ calls for SSL with app code (static app code);
         + Address IP field not displayed when using filter_by (#2934);
